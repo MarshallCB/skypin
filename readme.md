@@ -1,10 +1,10 @@
 <div align="center">
-  <img src="https://github.com/marshallcb/node-module/raw/main/meta/template.gif" alt="Template" width="100" />
+  <img src="https://github.com/marshallcb/skypin/raw/main/meta/skypin.png" alt="Skypin Logo" width="150" />
 </div>
 
-<h1 align="center">node-module</h1>
+<h1 align="center">skypin</h1>
 
-<h3 align="center">template for NodeJS modules</h3>
+<h3 align="center">Convert NPM imports into Skypack Pinned URL's</h3>
 
 <p align="center">:construction: Work in progress :construction:</p>
 

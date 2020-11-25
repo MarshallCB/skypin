@@ -1,8 +1,8 @@
 {
   "version": "0.0.0",
-  "name": "todo",
-  "repository": "TODO_USERNAME/TODO_REPO",
-  "description": "TODO_MODULE_DESCRIPTION",
+  "name": "skypin",
+  "repository": "MarshallCB/skypin",
+  "description": "Convert NPM imports into Skypack Pinned URL's",
   "keywords": [],
   "license": "MIT",
   "author": {
@@ -39,5 +39,11 @@
     "ts-node": "^9.0.0",
     "typescript": "^4.1.2",
     "uvu": "^0.4.1"
+  },
+  "dependencies": {
+    "find-up": "^5.0.0",
+    "path": "^0.12.7",
+    "resolve-from": "^5.0.0",
+    "umap": "^1.0.2"
   }
 }
