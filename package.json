@@ -30,10 +30,11 @@
   "scripts": {
     "build": "rollup -c",
     "prepublishOnly": "npm run build",
-    "test": "uvu -r ts-node/register test"
+    "test": "uvu -r esm test"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^10.0.0",
+    "esm": "^3.2.25",
     "rollup": "^2.33.3",
     "rollup-plugin-typescript2": "^0.29.0",
     "ts-node": "^9.0.0",
@@ -41,8 +42,11 @@
     "uvu": "^0.4.1"
   },
   "dependencies": {
+    "escalade": "^3.1.1",
     "find-up": "^5.0.0",
+    "node-fetch": "^2.6.1",
     "path": "^0.12.7",
+    "resolve-cwd": "^3.0.0",
     "resolve-from": "^5.0.0",
     "umap": "^1.0.2"
   }
