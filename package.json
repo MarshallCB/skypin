@@ -3,7 +3,13 @@
   "name": "skypin",
   "repository": "MarshallCB/skypin",
   "description": "Convert NPM imports into Skypack Pinned URL's",
-  "keywords": [],
+  "keywords": [
+    "skypack",
+    "cdn",
+    "pinned",
+    "performance",
+    "npm"
+  ],
   "license": "MIT",
   "author": {
     "name": "Marshall Brandt",
@@ -43,11 +49,7 @@
   },
   "dependencies": {
     "escalade": "^3.1.1",
-    "find-up": "^5.0.0",
     "node-fetch": "^2.6.1",
-    "path": "^0.12.7",
-    "resolve-cwd": "^3.0.0",
-    "resolve-from": "^5.0.0",
     "umap": "^1.0.2"
   }
 }
