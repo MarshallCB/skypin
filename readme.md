@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://github.com/marshallcb/skypin/raw/main/meta/skypin.png" alt="Skypin Logo" width="150" />
+  <img src="https://github.com/marshallcb/skypin/raw/main/meta/skypin.png" alt="Skypin Logo" width="300" />
 </div>
 
 <h1 align="center">skypin</h1>
