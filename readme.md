@@ -32,13 +32,13 @@ await lookup('hueman')
 
 #### `skypin(package)` -> `URL`
 - `package`: String that identifies the package in npm (`hueman`, `uhtml`, `themepark`, etc.) (no version number)
-- **Returns**: URL that can be used as an import statement in the browser
+- **Returns**: Promise that resolves to URL that can be used as an import statement in the browser
 
 Uses the version of the package found in `node_modules`. Requires that the module has been installed to the current working directory.
 
 #### `lookup(id)` -> `URL`
 - `id`: String of form `package` or `package@version`. Ex: `themepark`, `hueman@2.0.0`, `uhtml@2.1.4`
-- **Returns**: URL that can be used as an import statement in the browser
+- **Returns**: Promise that resolves to URL that can be used as an import statement in the browser
 
 Finds the pinned URL for the module at the version specified (or the latest version). If no pinned URL has been generated yet, it may take a few seconds to generate.
 
