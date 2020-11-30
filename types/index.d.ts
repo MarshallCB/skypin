@@ -1,5 +1,12 @@
-export declare function skypin(dependency: string, options: {
-    pinned: boolean;
+declare type Options = {
     minified: boolean;
-}): Promise<string>;
-export declare function lookup(module_id: string, minified?: boolean): Promise<string>;
+    pinned: boolean;
+    shouldReplace: (module_id: string) => boolean;
+};
+export declare function skypin(options: Options): {
+    resolveId(id: string): Promise<{
+        id: string;
+        external: boolean;
+    } | undefined>;
+};
+export {};
