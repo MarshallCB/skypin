@@ -8,9 +8,13 @@ const path = require('path');
 const escalade = require('escalade');
 const fetch = require('node-fetch');
 let cache = umap(new Map);
-let cdn = "https://cdn.skypack.dev/";
-async function skypin(dependency) {
-    // TODO: make sure dependency is not local
+let cdn = "https://cdn.skypack.dev";
+let default_options = {
+    pinned: true,
+    minified: true
+};
+async function findModuleVersion(dependency) {
+    let version = "";
     let pkg_path = await escalade(path.dirname(resolveCwd(dependency)), (dir, names) => {
         if (names.includes('package.json')) {
             let { name, version } = require(path.join(dir, 'package.json'));
@@ -19,26 +23,49 @@ async function skypin(dependency) {
             }
         }
     });
-    // TODO: handle package.json with version not found
-    let { version } = require(pkg_path);
-    let pinned_url = await lookup(`${dependency}@${version}`);
-    return pinned_url;
-}
-async function lookup(module_id) {
-    return cache.get(module_id) || cache.set(module_id, (await getMinifedSkypack(module_id)));
-}
-// TODO: handle error fetching / parsing response
-async function getMinifedSkypack(module_id) {
-    const response = await fetch(`${cdn}/${module_id}`);
-    const body = await response.text();
-    // let normal = (/Normal:\s([\S]+)/g.exec(body) || ["",""])[1]
-    let minified = (/Minified:\s([\S]+)/g.exec(body) || ["", ""])[1]; // regex + typescript shenanigans
-    if (minified === 'Not') {
-        let new_url = cdn + '/' + (/export\s\*\sfrom\s'([^\s;']+)/g.exec(body) || ["", ""])[1];
-        await fetch(new_url); // will likely take a few seconds
-        return lookup(module_id);
+    if (pkg_path) {
+        version = require(pkg_path).version;
     }
-    return minified;
+    return version || "";
+}
+async function skypin(dependency, options) {
+    options = { ...default_options, ...options };
+    if (dependency.startsWith('.')) {
+        // if local dependency, don't edit
+        return dependency;
+    }
+    let version = await findModuleVersion(dependency);
+    let module_id = version.length ? `${dependency}@${version}` : `${dependency}`;
+    if (options.pinned) {
+        return await lookup(module_id, options.minified);
+    }
+    else {
+        return `${cdn}/${module_id}`;
+    }
+}
+async function lookup(module_id, minified = true) {
+    return cache.get(module_id) || cache.set(module_id, (await fetchSkypack(module_id))[minified ? 'minified' : 'normal']);
+}
+async function fetchSkypack(module_id) {
+    try {
+        const response = await fetch(`${cdn}/${module_id}`);
+        const body = await response.text();
+        let normal = (/Normal:\s([\S]+)/g.exec(body) || ["", ""])[1];
+        let minified = (/Minified:\s([\S]+)/g.exec(body) || ["", ""])[1]; // regex + typescript shenanigans
+        if (minified === 'Not' || normal === 'Not') {
+            let new_url = cdn + '/' + (/export\s\*\sfrom\s'([^\s;']+)/g.exec(body) || ["", ""])[1];
+            await fetch(new_url); // will likely take a few seconds
+            return fetchSkypack(module_id);
+        }
+        if (!normal || !minified || !normal.length || !minified.length) {
+            throw 'Invalid URL found';
+        }
+        return { normal, minified };
+    }
+    catch (e) {
+        console.log("Error fetching module from skypack. Returning empty strings");
+        return { normal: "", minified: "" };
+    }
 }
 
 exports.lookup = lookup;
