@@ -6,6 +6,16 @@
 
 <h3 align="center">Convert NPM imports into Skypack Pinned URL's</h3>
 
+<div align="center">
+  <a href="https://npmjs.org/package/skypin">
+    <img src="https://badgen.now.sh/npm/v/skypin" alt="version" />
+  </a>
+  <a href="https://packagephobia.com/result?p=skypin">
+    <img src="https://badgen.net/packagephobia/install/skypin" alt="install size" />
+  </a>
+</div>
+
+
 ## About
 
 Skypack is a CDN built for browser modules and built by the creator of Snowpack. This module converts npm module id's into the optimized Skypack URL for optimal performance. Read more [here](https://docs.skypack.dev/skypack-cdn/api-reference/pinned-urls-optimized)
