@@ -4,7 +4,7 @@
 
 <h1 align="center">skypin</h1>
 
-<h3 align="center">Convert NPM imports into Skypack Pinned URL's</h3>
+<h3 align="center">Convert NodeJS imports into Skypack Pinned URL's</h3>
 
 <div align="center">
   <a href="https://npmjs.org/package/skypin">
