@@ -18,14 +18,14 @@
 
 ## About
 
-Skypack is a CDN built for browser modules and built by the creator of Snowpack. This module converts npm module id's into the optimized Skypack URL for optimal performance. Read more [here](https://docs.skypack.dev/skypack-cdn/api-reference/pinned-urls-optimized)
+Skypack is a CDN built for browser modules. This module converts npm module id's into the optimized Skypack URL for optimal performance. Read more [here](https://docs.skypack.dev/skypack-cdn/api-reference/pinned-urls-optimized). This could be used in build tools (like [rollup](https://github.com/MarshallCB/rollup-plugin-skypin)) to convert source code into browser-optimized modules.
 
 ## Usage
 
 ```js
 import { skypin, lookup } from 'skypin';
 
-// Uses version of package found in node_modules
+// Uses version of package found in node_modules (if it exists)
 await skypin('hueman')
 // ~> https://cdn.skypack.dev/pin/hueman@v2.1.1-ElNqhC8YFxLlgRtjjL9o/min/hueman.js
 
