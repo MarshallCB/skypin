@@ -36,8 +36,8 @@
       "require": "./dist/index.js"
     },
     "./browser": {
-      "import": "./browser/index.mjs",
-      "require": "./browser/index.js"
+      "import": "./dist/browser.mjs",
+      "require": "./dist/browser.js"
     },
     "./package.json": "./package.json"
   },

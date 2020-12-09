@@ -1,7 +1,7 @@
 
 import {skypin} from '../dist';
 
-skypin('hueman').then(res => {
+skypin('skypin').then(res => {
   console.log(res)
 })
 skypin('hueman@1.0.0').then(res => {
