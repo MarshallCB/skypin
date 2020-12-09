@@ -18,6 +18,8 @@
   },
   "module": "dist/index.mjs",
   "main": "dist/index.js",
+  "unpkg": "dist/browser.min.js",
+  "browser": "dist/browser.mjs",
   "types": "types/index.d.ts",
   "files": [
     "dist",
@@ -26,7 +28,16 @@
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
+      "browser": "./dist/browser.mjs",
       "require": "./dist/index.js"
+    },
+    "./node": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./browser": {
+      "import": "./browser/index.mjs",
+      "require": "./browser/index.js"
     },
     "./package.json": "./package.json"
   },
@@ -36,12 +47,13 @@
   "scripts": {
     "build": "rollup -c",
     "prepublishOnly": "npm run build",
-    "test": "uvu -r esm test"
+    "test": "npm run build && node -r esm test"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^10.0.0",
     "esm": "^3.2.25",
     "rollup": "^2.33.3",
+    "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.29.0",
     "ts-node": "^9.0.0",
     "typescript": "^4.1.2",

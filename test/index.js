@@ -1,17 +1,10 @@
-// import { suite } from 'uvu';
-// import * as assert from 'uvu/assert';
-import {lookup, skypin} from '../dist';
 
-// const lookupTest = suite('lookup');
+import {skypin} from '../dist';
 
-// lookupTest('Correct pinned responses', () => {
-//   assert.equal(true,  true)
-// })
-
-lookup('hueman@1.0.0', false).then(res => {
+skypin('hueman').then(res => {
   console.log(res)
 })
-lookup('hueman@1.0.0', true).then(res => {
+skypin('hueman@1.0.0').then(res => {
   console.log(res)
 })
 

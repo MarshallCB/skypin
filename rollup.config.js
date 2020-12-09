@@ -1,9 +1,9 @@
 import resolve from '@rollup/plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
 import pkg from './package.json';
-// import { terser } from 'rollup-plugin-terser';
+import { terser } from 'rollup-plugin-terser';
 
-export default {
+export default [{
 	input: 'src/index.ts',
 	output: [{
 		format: 'esm',
@@ -25,4 +25,29 @@ export default {
 			useTsconfigDeclarationDir: true
 		})
 	]
-}
+},{
+	input: 'src/browser.js',
+	output: [{
+		format: 'umd',
+		file: pkg.unpkg,
+		name: pkg['umd:name'] || pkg.name,
+		sourcemap: false,
+		plugins: [terser()]
+	}, {
+		format: 'cjs',
+		file: 'dist/browser.js',
+		sourcemap: false,
+	}, {
+		format: 'esm',
+		file: pkg.browser,
+		sourcemap: false,
+	}, {
+		format: 'esm',
+		file: 'es.js',
+		sourcemap: false,
+		plugins: [terser()]
+	}],
+	plugins: [
+		resolve()
+	]
+}]

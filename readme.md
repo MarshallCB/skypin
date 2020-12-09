@@ -4,7 +4,7 @@
 
 <h1 align="center">skypin</h1>
 
-<h3 align="center">Convert NodeJS imports into Skypack Pinned URL's</h3>
+<h3 align="center">Convert NPM imports into Skypack Pinned URL's</h3>
 
 <div align="center">
   <a href="https://npmjs.org/package/skypin">
@@ -12,6 +12,9 @@
   </a>
   <a href="https://packagephobia.com/result?p=skypin">
     <img src="https://badgen.net/packagephobia/install/skypin" alt="install size" />
+  </a>
+  <a href="https://bundlephobia.com/result?p=skypin">
+    <img src="https://img.badgesize.io/MarshallCB/skypin/main/es.js?compression=brotli" alt="browser size" />
   </a>
 </div>
 
@@ -23,41 +26,34 @@ Skypack is a CDN built for browser modules. This module converts npm module id's
 ## Usage
 
 ```js
-import { skypin, lookup } from 'skypin';
+import { skypin } from 'skypin';
 
-// Uses version of package found in node_modules (if it exists)
+// Uses version of package found in node_modules (if it exists - otherwise 'latest')
 await skypin('hueman')
 // ~> https://cdn.skypack.dev/pin/hueman@v2.1.1-ElNqhC8YFxLlgRtjjL9o/min/hueman.js
 
 await skypin('hueman', { pinned: false })
 // ~> https://cdn.skypack.dev/hueman@2.1.1
 
+await skypin('hueman', { min: false })
+// ~> https://cdn.skypack.dev/hueman@2.1.1
+
 // Specify version directly
-await lookup('hueman@2.0.0')
+await skypin('hueman@2.0.0')
 // ~> https://cdn.skypack.dev/pin/hueman@v2.0.0-Eh8v1x3dV0iEyJ9rG915/min/hueman.js
 
-// Use latest version with no minification
-await lookup('hueman', false)
-// ~> https://cdn.skypack.dev/pin/hueman@v2.1.1-ElNqhC8YFxLlgRtjjL9o/hueman.js
 ```
 
 ## API
 
 #### `skypin(module_id, options)` -> `URL`
-- `module_id`: String that identifies the package in npm (`hueman`, `uhtml`, `themepark`, etc.) (no version number)
+- `module_id`: String that identifies the package in npm (`hueman`, `uhtml@latest`, `themepark@1.0.0`, etc.) (version number optional)
 - `options`:
   - `pinned`: Boolean (default `true`). Read more [here](https://docs.skypack.dev/skypack-cdn/api-reference/pinned-urls-optimized)
-  - `minified`: Boolean (default `true`). Based on normal vs. minified in skypack lookup page
+  - `min`: Boolean (default `true`). Based on normal vs. minified in skypack lookup page
 - **Returns**: Promise that resolves to URL that can be used as an import statement in the browser
 
-Uses the version of the package found in `node_modules`. Requires that the module has been installed to the current working directory.
-
-#### `lookup(id, minified)` -> `URL`
-- `id`: String of form `package` or `package@version`. Ex: `themepark`, `hueman@2.0.0`, `uhtml@2.1.4`
-- `minified`: Boolean (default `true`). Based on normal vs. minified in skypack lookup page
-- **Returns**: Promise that resolves to URL that can be used as an import statement in the browser
-
-Finds the pinned URL for the module at the version specified (or the latest version). If no pinned URL has been generated yet, it may take a few seconds to generate.
+Uses the version of the package found in `node_modules`. Requires that the module has been installed to the current working directory. May take a few seconds if the package has not been "pinned" on skypack before.
 
 ## References
 

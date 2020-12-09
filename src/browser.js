@@ -1,8 +1,4 @@
-const resolveCwd = require('resolve-cwd')
-const umap = require('umap')
-const path = require('path')
-const escalade = require('escalade')
-const fetch = require('node-fetch');
+import umap from 'umap'
 
 let cache = umap(new Map)
 
@@ -13,38 +9,13 @@ let default_options = {
   minified: true
 }
 
-async function localVersion(dependency:string):Promise<string>{
-  try{
-    let version=""
-    let pkg_path = await escalade(path.dirname(resolveCwd(dependency)), (dir:string, names:[string]) => {
-      if(names.includes('package.json')){
-        let { name, version } = require(path.join(dir,'package.json'))
-        if(name === dependency && version){
-          return 'package.json'
-        }
-      }
-    })
-    if(pkg_path){
-      version = require(pkg_path).version
-    }
-    // if we couldn't locate it locally, assume latest version
-    return version || "latest"
-  } catch(e){
-    return "latest"
-  }
-}
-
-export async function skypin(dependency:string, options:{pinned: boolean,minified:boolean}):Promise<string>{
+export async function skypin(dependency, {pinned,minified}={}){
   options = { ...default_options, ...options}
   if(dependency.startsWith('.') || dependency.startsWith('https://') || dependency.startsWith('http://')){
     // if local dependency or existing web url, don't edit
     return dependency
   }
-  let [id, version] = dependency.split('@').filter(s=>s.length)
-  if(!version){
-    // if version wasn't specified, try to use local version (fallback to latest)
-    version = await localVersion(dependency)
-  }
+  let [id, version='latest'] = dependency.split('@').filter(s=>s.length)
   let module_id = `${id}@${version}`
   if(options.pinned){
     return await lookup(module_id, options.minified)
@@ -53,11 +24,11 @@ export async function skypin(dependency:string, options:{pinned: boolean,minifie
   }
 }
 
-async function lookup(module_id:string, minified=true):Promise<string>{
+async function lookup(module_id, minified=true){
   return cache.get(module_id) || cache.set(module_id,(await fetchSkypack(module_id))[minified ? 'minified' : 'normal'])
 }
 
-async function fetchSkypack(module_id:string):Promise<{normal:string,minified:string}>{
+async function fetchSkypack(module_id){
   try{
     const response = await fetch(`${cdn}/${module_id}`);
     let x_import_status = response.headers.get('x-import-status') //  NEW  | SUCCESS
