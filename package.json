@@ -16,7 +16,7 @@
     "email": "hey@m4r.sh",
     "url": "https://m4r.sh"
   },
-  "module": "dist/index.mjs",
+  "module": "dist/browser.mjs",
   "main": "dist/index.js",
   "unpkg": "dist/browser.min.js",
   "browser": "dist/browser.mjs",
@@ -27,7 +27,7 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
+      "import": "./dist/browser.mjs",
       "browser": "./dist/browser.mjs",
       "require": "./dist/index.js"
     },

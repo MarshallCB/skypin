@@ -41,6 +41,7 @@ export async function skypin(dependency:string, options:{pinned: boolean,minifie
     return dependency
   }
   let [id, version] = dependency.split('@').filter(s=>s.length)
+  id = dependency.charAt(0) === '@' ? `@${id}` : id
   if(!version){
     // if version wasn't specified, try to use local version (fallback to latest)
     version = await localVersion(dependency)
