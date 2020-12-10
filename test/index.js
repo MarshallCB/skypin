@@ -12,10 +12,10 @@ skypin('umap').then(res => {
   console.log(res)
 })
 
-skypin('umap', { pinned: false }).then(res => {
+skypin('umap', { pin: false }).then(res => {
   console.log(res)
 })
 
-skypin('umap', { minified: false }).then(res => {
+skypin('umap', { min: false }).then(res => {
   console.log(res)
 })

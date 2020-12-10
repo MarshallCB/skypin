@@ -49,7 +49,7 @@ await skypin('hueman@2.0.0')
 #### `skypin(module_id, options)` -> `URL`
 - `module_id`: String that identifies the package in npm (`hueman`, `uhtml@latest`, `themepark@1.0.0`, etc.) (version number optional)
 - `options`:
-  - `pinned`: Boolean (default `true`). Read more [here](https://docs.skypack.dev/skypack-cdn/api-reference/pinned-urls-optimized)
+  - `pin`: Boolean (default `true`). Read more [here](https://docs.skypack.dev/skypack-cdn/api-reference/pinned-urls-optimized)
   - `min`: Boolean (default `true`). Based on normal vs. minified in skypack lookup page
 - **Returns**: Promise that resolves to URL that can be used as an import statement in the browser
 

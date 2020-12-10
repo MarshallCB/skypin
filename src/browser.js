@@ -9,7 +9,7 @@ let default_options = {
   minified: true
 }
 
-export async function skypin(dependency, {pinned,minified}={}){
+export async function skypin(dependency, options={}){
   options = { ...default_options, ...options}
   if(dependency.startsWith('.') || dependency.startsWith('https://') || dependency.startsWith('http://')){
     // if local dependency or existing web url, don't edit
