@@ -26,8 +26,8 @@ async function skypin(dependency, options={}){
   let [id, version='latest'] = dependency.split('@').filter(s=>s.length);
   id = dependency.charAt(0) === '@' ? `@${id}` : id;
   let module_id = `${id}@${version}`;
-  if(options.pinned){
-    return await lookup(module_id, options.minified)
+  if(options.pin){
+    return await lookup(module_id, options.min)
   } else {
     return `${cdn}/${module_id}`
   }
