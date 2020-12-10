@@ -36,7 +36,7 @@ async function fetchSkypack(module_id){
     let normal = (/Normal:\s([\S]+)/g.exec(body) || ["",""])[1]
     let minified = (/Minified:\s([\S]+)/g.exec(body) || ["",""])[1] // regex + typescript shenanigans
     if(minified === 'Not' || normal === 'Not'){
-      let new_url = cdn + '/' + (/export\s\*\sfrom\s'([^\s;']+)/g.exec(body) || ["",""])[1]
+      let new_url = cdn + (/export\s\*\sfrom\s'([^\s;']+)/g.exec(body) || ["",""])[1]
       await fetch(new_url) // will likely take a few seconds
       return fetchSkypack(module_id)
     }
