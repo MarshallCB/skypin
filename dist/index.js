@@ -10,8 +10,8 @@ const fetch = require('node-fetch');
 let cache = umap(new Map);
 let cdn = "https://cdn.skypack.dev";
 let default_options = {
-    pinned: true,
-    minified: true
+    pin: true,
+    min: true
 };
 async function localVersion(dependency) {
     try {
@@ -47,8 +47,8 @@ async function skypin(dependency, options) {
         version = await localVersion(dependency);
     }
     let module_id = `${id}@${version}`;
-    if (options.pinned) {
-        return await lookup(module_id, options.minified);
+    if (options.pin) {
+        return await lookup(module_id, options.min);
     }
     else {
         return `${cdn}/${module_id}`;

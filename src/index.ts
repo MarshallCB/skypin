@@ -9,8 +9,8 @@ let cache = umap(new Map)
 let cdn = "https://cdn.skypack.dev"
 
 let default_options = {
-  pinned: true,
-  minified: true
+  pin: true,
+  min: true
 }
 
 async function localVersion(dependency:string):Promise<string>{
@@ -34,7 +34,7 @@ async function localVersion(dependency:string):Promise<string>{
   }
 }
 
-export async function skypin(dependency:string, options:{pinned: boolean,minified:boolean}):Promise<string>{
+export async function skypin(dependency:string, options:{pin: boolean,min:boolean}):Promise<string>{
   options = { ...default_options, ...options}
   if(dependency.startsWith('.') || dependency.startsWith('https://') || dependency.startsWith('http://')){
     // if local dependency or existing web url, don't edit
@@ -47,8 +47,8 @@ export async function skypin(dependency:string, options:{pinned: boolean,minifie
     version = await localVersion(dependency)
   }
   let module_id = `${id}@${version}`
-  if(options.pinned){
-    return await lookup(module_id, options.minified)
+  if(options.pin){
+    return await lookup(module_id, options.min)
   } else {
     return `${cdn}/${module_id}`
   }

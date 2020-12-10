@@ -1,4 +1,4 @@
 export declare function skypin(dependency: string, options: {
-    pinned: boolean;
-    minified: boolean;
+    pin: boolean;
+    min: boolean;
 }): Promise<string>;

@@ -13,8 +13,8 @@ let cache = umap(new Map);
 let cdn = "https://cdn.skypack.dev";
 
 let default_options = {
-  pinned: true,
-  minified: true
+  pin: true,
+  min: true
 };
 
 async function skypin(dependency, options={}){
@@ -40,19 +40,18 @@ async function lookup(module_id, minified=true){
 async function fetchSkypack(module_id){
   try{
     const response = await fetch(`${cdn}/${module_id}`);
-    let x_import_status = response.headers.get('x-import-status'); //  NEW  | SUCCESS
-    let x_import_url = response.headers.get('x-import-url'); //  /new/it-helpers@v0.0.1/dist=es2020  | /-/it-helpers@v0.0.1-hYEkfsvYtBqTC0EmayFU/dist=es2020/it-helpers.js
-    let x_pinned_url = response.headers.get('x-pinned-url') || x_import_url; //  /pin/it-helpers@v0.0.1-hYEkfsvYtBqTC0EmayFU/it-helpers.js
-    
-    if(x_import_status === 'NEW' && x_import_url){
-      await fetch(`${cdn}${x_import_url}`); // will likely take a few seconds
-      return await fetchSkypack(module_id)
+    const body = await response.text();
+    let normal = (/Normal:\s([\S]+)/g.exec(body) || ["",""])[1];
+    let minified = (/Minified:\s([\S]+)/g.exec(body) || ["",""])[1]; // regex + typescript shenanigans
+    if(minified === 'Not' || normal === 'Not'){
+      let new_url = cdn + '/' + (/export\s\*\sfrom\s'([^\s;']+)/g.exec(body) || ["",""])[1];
+      await fetch(new_url); // will likely take a few seconds
+      return fetchSkypack(module_id)
     }
-    let lastSlash = x_pinned_url.lastIndexOf('/');
-    return {
-      normal: `${cdn}${x_pinned_url}`,
-      minified: `${cdn}${x_pinned_url.slice(0, lastSlash) + '/min' + x_pinned_url.slice(lastSlash)}`
+    if(!normal || !minified || !normal.length || !minified.length){
+      throw 'Invalid URL found'
     }
+    return {normal, minified};
   } catch(e){
     console.log("Error fetching module from skypack. Returning empty strings");
     console.log(e);
