@@ -33,7 +33,7 @@ import { skypin } from 'skypin';
 await skypin('hueman')
 // ~> https://cdn.skypack.dev/pin/hueman@v2.1.1-ElNqhC8YFxLlgRtjjL9o/min/hueman.js
 
-await skypin('hueman', { pinned: false })
+await skypin('hueman', { pin: false })
 // ~> https://cdn.skypack.dev/hueman@2.1.1
 
 await skypin('hueman', { min: false })
