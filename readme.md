@@ -25,6 +25,7 @@ Skypack is a CDN built for browser modules. This module converts npm module id's
 
 ## Usage
 
+**NodeJS**
 ```js
 import { skypin } from 'skypin';
 
@@ -42,6 +43,13 @@ await skypin('hueman', { min: false })
 await skypin('hueman@2.0.0')
 // ~> https://cdn.skypack.dev/pin/hueman@v2.0.0-Eh8v1x3dV0iEyJ9rG915/min/hueman.js
 
+```
+
+**Browser** [Codepen](https://codepen.io/marshallcb/pen/qBaaJRY?editors=0011)
+```js
+import { skypin } from 'https://cdn.skypack.dev/skypin'
+
+await skypin('hueman')
 ```
 
 ## API
