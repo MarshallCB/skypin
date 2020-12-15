@@ -74,7 +74,7 @@ async function fetchSkypack(module_id) {
         };
     }
     catch (e) {
-        console.log("Error fetching module from skypack. Returning empty strings");
+        console.log(`Error fetching module "${module_id}" from skypack. Returning empty strings`);
         console.log(e);
         return { normal: "", minified: "" };
     }

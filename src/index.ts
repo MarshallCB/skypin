@@ -75,7 +75,7 @@ async function fetchSkypack(module_id:string):Promise<{normal:string,minified:st
       minified: `${cdn}${x_pinned_url.slice(0, lastSlash) + '/min' + x_pinned_url.slice(lastSlash)}`
     }
   } catch(e){
-    console.log("Error fetching module from skypack. Returning empty strings")
+    console.log(`Error fetching module "${module_id}" from skypack. Returning empty strings`)
     console.log(e)
     return {normal:"",minified:""}
   }
