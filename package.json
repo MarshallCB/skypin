@@ -1,5 +1,5 @@
 {
-  "version": "2.0.6",
+  "version": "2.0.7",
   "name": "skypin",
   "repository": "MarshallCB/skypin",
   "description": "Convert NPM imports into Skypack Pinned URL's",
