@@ -63,7 +63,6 @@ async function lookup(module_id, minified = true) {
 }
 async function fetchSkypack(module_id) {
     try {
-        console.log(`${cdn}/${module_id}`);
         const response = await fetch(`${cdn}/${module_id}`);
         let x_import_status = response.headers.get('x-import-status'); //  NEW  | SUCCESS
         let x_import_url = response.headers.get('x-import-url'); //  /new/it-helpers@v0.0.1/dist=es2020  | /-/it-helpers@v0.0.1-hYEkfsvYtBqTC0EmayFU/dist=es2020/it-helpers.js
