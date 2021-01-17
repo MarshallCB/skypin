@@ -9,15 +9,25 @@ let default_options = {
   min: true
 }
 
+function injectVersion(dependency="", getVersion=()=>'latest'){
+  let regex = /^(@[\w-_\.]+\/[\w-_\.]+|[\w-_\.]+)(@([\d\.]+))?([\/\w-_\.]+)*/g
+  let arr = regex.exec(dependency)
+  if(arr){
+    let [_, m, __, v, p=''] = arr
+    v = v || getVersion(m)
+    return m+'@'+v+p
+  }
+  return dependency
+}
+
+
 export async function skypin(dependency, options={}){
   options = { ...default_options, ...options}
   if(dependency.startsWith('.') || dependency.startsWith('https://') || dependency.startsWith('http://')){
     // if local dependency or existing web url, don't edit
     return dependency
   }
-  let [id, version='latest'] = dependency.split('@').filter(s=>s.length)
-  id = dependency.charAt(0) === '@' ? `@${id}` : id
-  let module_id = `${id}@${version}`
+  let module_id = injectVersion(dependency)
   if(options.pin){
     return await lookup(module_id, options.min)
   } else {

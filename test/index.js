@@ -1,7 +1,7 @@
 
 import {skypin} from '../dist';
 
-skypin('skypin').then(res => {
+skypin('highlight.js/lib/core.js').then(res => {
   console.log(res)
 })
 skypin('hueman@1.0.0').then(res => {

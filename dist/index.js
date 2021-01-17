@@ -5,7 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 const resolveCwd = require('resolve-cwd');
 const umap = require('umap');
 const path = require('path');
-const escalade = require('escalade');
+const escalade = require('escalade/sync');
 const fetch = require('node-fetch');
 let cache = umap(new Map);
 let cdn = "https://cdn.skypack.dev";
@@ -13,10 +13,20 @@ let default_options = {
     pin: true,
     min: true
 };
-async function localVersion(dependency) {
+function injectVersion(dependency = "", getVersion = (id) => 'latest') {
+    let regex = /^(@[\w-_\.]+\/[\w-_\.]+|[\w-_\.]+)(@([\d\.]+))?([\/\w-_\.]+)*/g;
+    let arr = regex.exec(dependency);
+    if (arr) {
+        let [_, m, __, v, p = ''] = arr;
+        v = v || getVersion(m);
+        return m + '@' + v + p;
+    }
+    return dependency;
+}
+function localVersion(dependency) {
     try {
         let version = "";
-        let pkg_path = await escalade(path.dirname(resolveCwd(dependency)), (dir, names) => {
+        let pkg_path = escalade(path.dirname(resolveCwd(dependency)), (dir, names) => {
             if (names.includes('package.json')) {
                 let { name, version } = require(path.join(dir, 'package.json'));
                 if (name === dependency && version) {
@@ -40,13 +50,7 @@ async function skypin(dependency, options) {
         // if local dependency or existing web url, don't edit
         return dependency;
     }
-    let [id, version] = dependency.split('@').filter(s => s.length);
-    id = dependency.charAt(0) === '@' ? `@${id}` : id;
-    if (!version) {
-        // if version wasn't specified, try to use local version (fallback to latest)
-        version = await localVersion(dependency);
-    }
-    let module_id = `${id}@${version}`;
+    let module_id = injectVersion(dependency, localVersion);
     if (options.pin) {
         return await lookup(module_id, options.min);
     }
@@ -59,6 +63,7 @@ async function lookup(module_id, minified = true) {
 }
 async function fetchSkypack(module_id) {
     try {
+        console.log(`${cdn}/${module_id}`);
         const response = await fetch(`${cdn}/${module_id}`);
         let x_import_status = response.headers.get('x-import-status'); //  NEW  | SUCCESS
         let x_import_url = response.headers.get('x-import-url'); //  /new/it-helpers@v0.0.1/dist=es2020  | /-/it-helpers@v0.0.1-hYEkfsvYtBqTC0EmayFU/dist=es2020/it-helpers.js
