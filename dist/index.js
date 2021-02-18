@@ -71,10 +71,9 @@ async function fetchSkypack(module_id) {
             await fetch(`${cdn}${x_import_url}`); // will likely take a few seconds
             return await fetchSkypack(module_id);
         }
-        let lastSlash = x_pinned_url.lastIndexOf('/');
         return {
-            normal: `${cdn}${x_pinned_url}`,
-            minified: `${cdn}${x_pinned_url.slice(0, lastSlash) + '/min' + x_pinned_url.slice(lastSlash)}`
+            normal: cdn + x_pinned_url,
+            minified: cdn + x_pinned_url.replace('mode=imports', 'mode=imports,min')
         };
     }
     catch (e) {
