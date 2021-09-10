@@ -48,7 +48,7 @@ function localVersion(dependency:string):string{
 
 export async function skypin(dependency:string, options:{pin: boolean,min:boolean}):Promise<string>{
   options = { ...default_options, ...options}
-  if(dependency.match(/^\.|^https?:\/\//)) {
+  if(dependency.match(/^\.|^\/|^https?:\/\/|.js$/)) {
     // if local dependency or existing web url, don't edit
     return dependency
   }
